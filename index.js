@@ -6,14 +6,13 @@ function sync(bpm, sampleRate){ // bpm, sampleRate,
 	if(!(this instanceof sync)) return new sync(bpm, sampleRate)
 
 	this.bpm = bpm
-	this.beatsPerSecond = bpm / 60
+	this.beatsPerSecond = Math.round(bpm / 60)
 	this.sampleRate = sampleRate
-	this.spb = sampleRate / this.beatsPerSecond
+	this.spb = Math.round(sampleRate / this.beatsPerSecond)
 	this.s = 0
 	this.t = 0
 	this.index = []
 	this.beatIndex = new Array()
-
 	return this
 }
 
