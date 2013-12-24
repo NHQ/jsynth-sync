@@ -4,7 +4,7 @@ A syncopation module for [jsynth](https://github.com/NHQ/jsynth), [baudio](https
 
 ## how to use it
 
-see also example.js
+see also [the example](https://github.com/NHQ/jsynth-sync/blob/master/example.js)
 
 The constructor requires beatsPerMinute and SampleRate values.
 
@@ -22,8 +22,6 @@ var i = timer.on(1/2, function(t, i, b){
 function synth(t){
 
 	timer.tick.apply(timer, arguments)
-
-	return 0
 
 };
 
