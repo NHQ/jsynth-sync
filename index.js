@@ -31,7 +31,6 @@ $.tick = function(t, i){
 
 $.off = function(i){
 	this.index.splice(i,1,undefined)
-	console.log(this.index)
 }
 
 $.on = function(beats, fn){
@@ -45,7 +44,6 @@ $.on = function(beats, fn){
 			fn.apply(fn, [t, ++self.beatIndex[i], off])
 		}
 	})
-	console.log(this.index)
 	return off
 
 }
