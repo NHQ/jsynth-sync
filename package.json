@@ -1,0 +1,27 @@
+{
+  "name": "jsynth-sync",
+  "version": "0.3.0",
+  "description": "syncopator for audio scripting",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:NHQ/jsynth-sync.git"
+  },
+  "keywords": [
+    "jsynth",
+    "baudio",
+    "browserify",
+    "timers",
+    "dsp",
+    "webaudio"
+  ],
+  "author": "Johnny Honestly <mostmodernist@gmail.com> (http://johnnyscript.us/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NHQ/jsynth-sync/issues"
+  },
+  "homepage": "https://github.com/NHQ/jsynth-sync"
+}
