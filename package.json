@@ -1,15 +1,15 @@
 {
   "name": "jsynth-sync",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "syncopator for audio scripting",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies" : {
-    "baudio" : "",
-    "jmod" : "",
-    "oscillators" : ""
+  "devDependencies": {
+    "baudio": "",
+    "jmod": "",
+    "oscillators": ""
   },
   "repository": {
     "type": "git",
