@@ -3,6 +3,9 @@
 A syncopation module for [jsynth](https://github.com/NHQ/jsynth), [baudio](https://github.com/substack/baudio), and [webaudio](https://github.com/NHQ/webaudio);
 
 ## how to use it
+
+see also example.js
+
 The constructor requires beatsPerMinute and SampleRate values.
 
 ```js
