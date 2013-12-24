@@ -12,10 +12,10 @@ The constructor requires beatsPerMinute and SampleRate values.
 var sync = require('jsynth-sync');
 
 var timer = sync(72, 8000) // 72 bpm, samplRate 8000 (8k samples per second)
-var t = timer.on(1, function(t, i, b){
+var t = timer.on(1, function(time, beatCount, clearFN){
 	// do something every beat
 })
-var i = timer.on(1/2, function(t, i, b){
+var i = timer.on(1/2, function(t, b, clrFN){
 	// do something every half beat
 })
 
