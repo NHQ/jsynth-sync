@@ -13,7 +13,6 @@ function sync(bpm, sampleRate){ // bpm, sampleRate,
 	this.t = 0
 	this.index = []
 	this.beatIndex = new Array()
-	console.log(this)
 	return this
 }
 
