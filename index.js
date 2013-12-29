@@ -6,13 +6,14 @@ function sync(bpm, sampleRate){ // bpm, sampleRate,
 	if(!(this instanceof sync)) return new sync(bpm, sampleRate)
 
 	this.bpm = bpm
-	this.beatsPerSecond = Math.round(bpm / 60)
+	this.beatsPerSecond = bpm / 60
 	this.sampleRate = sampleRate
 	this.spb = Math.round(sampleRate / this.beatsPerSecond)
 	this.s = 0
 	this.t = 0
 	this.index = []
 	this.beatIndex = new Array()
+	console.log(this)
 	return this
 }
 
@@ -23,9 +24,9 @@ $.clearAll = function(bpm, samplerate){
 $.tick = function(t, i){
 	this.s++
 	if(!t) t = this.s / this.sampleRate
-	var f = (this.s % this.spb) + 1;
+//	var f = (this.s % this.spb) + 1;
 	for(var n = 0; n < this.index.length; n++ ){
-		if(this.index[n]) this.index[n](t, i, f)
+		if(this.index[n]) this.index[n](t, i, this.s)
 	}
 }
 
