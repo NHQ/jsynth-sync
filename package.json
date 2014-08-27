@@ -7,9 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "baudio": "",
-    "jmod": "",
-    "oscillators": ""
+    "baudio": "^2.1.2",
+    "jmod": "^0.4.0",
+    "jsynth": "^2.2.0",
+    "oscillators": "^1.0.0"
   },
   "repository": {
     "type": "git",

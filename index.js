@@ -1,5 +1,6 @@
 module.exports = sync
-var $ = module.exports.prototype
+
+var $ = module.exports
 
 function sync(bpm, sampleRate){ // bpm, sampleRate, 
 
@@ -13,14 +14,14 @@ function sync(bpm, sampleRate){ // bpm, sampleRate,
 	this.t = 0
 	this.index = []
 	this.beatIndex = new Array()
-	return this
+
 }
 
-$.clearAll = function(bpm, samplerate){
+$.prototype.clearAll = function(bpm, samplerate){
 	this.index = this.index.map(function(){return undefined})
 }
 
-$.tick = function(t, i){
+$.prototype.tick = function(t, i){
 	this.s++
 	if(!t) t = this.s / this.sampleRate
 //	var f = (this.s % this.spb) + 1;
@@ -29,11 +30,11 @@ $.tick = function(t, i){
 	}
 }
 
-$.off = function(i){
+$.prototype.off = function(i){
 	this.index.splice(i,1,undefined)
 }
 
-$.on = function(beats, fn){
+$.prototype.on = function(beats, fn){
 	var i = Math.floor(this.spb * beats);
 	var l = this.index.length;
 	if(!(this.beatIndex[i])) this.beatIndex[i] = 0;
