@@ -23,14 +23,14 @@ var jigger = require('jigger')
 var generator = new jigger()
 
 var oscillators = require('oscillators');
-var sync = require('./')
-var bpm = 78 
+var sync = require('./') // jsynth-sync
+var bpm = 66 
 var timer = sync(bpm, master.sampleRate)
 
 
 var generators = [];
 var beatmath = require('../beatmath')
-var onbeat = beatmath(12, [4,11])
+var onbeat = beatmath(24, [5,11,17,23])
 unswing = false
 var t0 = timer.on(1/4, function(ti, b, off, swing){
   
@@ -41,23 +41,22 @@ var t0 = timer.on(1/4, function(ti, b, off, swing){
   var x = onbeat(b)
   if(x){
     if(x == 5) {
-      swing(1/4)
-      onbeat = beatmath(12, [4,10,11])
+      swing(3/16)
     }
     else if(x == 4) {
-      onbeat = beatmath(12, [5, 11])
-      swing(7/16)
+      onbeat = beatmath(12, [5,11, 17, 23])
+      swing(5/8)
     }
     else if(x == 11) {
       swing(1/2)
     }
     else{
-      swing(1/4)
+      swing(4/5)
     }
     unswing = true
   }
   var attack = [[0,0], [0,1], [1,1]]
-  var release = [[0,1], [0,1], [1, 0]]
+  var release = [[0,1], [0,0], [1, 0]]
   var y = x == 5 ? 1/4 : 1/2
   var durations = [.02, bpm / 60 * y ]
 
