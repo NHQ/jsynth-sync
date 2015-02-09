@@ -1,52 +1,65 @@
-var master = new AudioContext
+master = new AudioContext
 var jsynth = require('jsynth')
 
-var nvelope = require('jmod')
+var nvelope = require('nvelope')
+var jigger = require('jigger')
+var generator = new jigger()
+
 var oscillators = require('oscillators');
 var sync = require('./')
+var bpm = 78 
+var timer = sync(bpm, master.sampleRate)
 
-var timer = sync(60, 8000)
-var timer2 = sync(120, 8000)
-
-var attack = [[0,-.5], [0,6], [1,2]]
-var release = [[1,2], [0,-1], [1, 0]]
-var durations = [.05, .2]
-
-var amod = {}
-amod.curves = [attack, release];
-amod.durations = durations;
 
 var generators = [];
+var beatmath = require('../beatmath')
+var onbeat = beatmath(12, [4,11])
+unswing = false
+var t0 = timer.on(1/4, function(ti, b, off, swing){
+  
+  if(unswing){
+    swing(0)
+    unswing = false
+  }
+  var x = onbeat(b)
+  if(x){
+    if(x == 5) {
+      swing(1/4)
+      onbeat = beatmath(12, [4,10,11])
+    }
+    else if(x == 4) {
+      onbeat = beatmath(12, [5, 11])
+      swing(7/16)
+    }
+    else if(x == 11) {
+      swing(1/2)
+    }
+    else{
+      swing(1/4)
+    }
+    unswing = true
+  }
+  var attack = [[0,0], [0,1], [1,1]]
+  var release = [[0,1], [0,1], [1, 0]]
+  var y = x == 5 ? 1/4 : 1/2
+  var durations = [.02, bpm / 60 * y ]
 
-
-var t0 = timer.on(3, function(ti, b){ 
-	var mod = nvelope(amod);
-	b = (b * 1.667)
-	var synth = function(t){
-		return oscillators.sine(t, 333) * mod.envelope(t - ti)
+  var amod = {}
+  amod.curves = [attack, release];
+  amod.durations = durations;
+  var mod = nvelope(amod.curves, amod.durations);
+  var synth = function(t){
+		return oscillators.sine(t, b % 2 == 0 ? (y == 11 ? 54 * 4/5:54):54 * 2) * mod(t - ti)
 	}
-	generators.push(synth)
+	generator.set(ti, synth, amod)
 }) 
 
-var t1= timer.on(3, function(ti, b){
-  amod.durations[1] = 1
-	var mod = nvelope(amod);
-	b = (b * 1.667)
-	var synth = function(t){
-		return oscillators.sine(t, 333 * 2) * mod.envelope(t - ti) / 2
-	}
-	generators.push(synth)
-})
-var synth = function(t){
-  timer2.tick.call(timer2, t)
+var synth = function(t, s, i){
 	timer.tick.call(timer, t)
-	var s =  generators.reduce(function(p,e,i,d){
-		return p + e(t)
-	}, 0)
-	return s
+	return generator.tick(t, s, i)
 }
 
-var dsp = jsynth(master, synth)
+dsp = jsynth(master, synth)
 dsp.connect(master.destination)
 
 

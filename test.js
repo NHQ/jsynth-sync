@@ -19,7 +19,6 @@ function synth(t, i){ // presume t begins at zero
 
 };
 
-baudio.push(synth);
-baudio.play()
+baudio.play(synth);
 
 

@@ -22,8 +22,8 @@ $.prototype.clearAll = function(bpm, samplerate){
 }
 
 $.prototype.tick = function(t, i){
-	this.s++
-	if(!t) t = this.s / this.sampleRate
+	++this.s
+//	if(!t) t = this.s / this.sampleRate
 //	var f = (this.s % this.spb) + 1;
 	for(var n = 0; n < this.index.length; n++ ){
 		if(this.index[n]) this.index[n](t, i, this.s)
@@ -37,15 +37,38 @@ $.prototype.off = function(i){
 $.prototype.on = function(beats, fn){
 	var i = Math.floor(this.spb * beats);
 	var l = this.index.length;
-	if(!(this.beatIndex[i])) this.beatIndex[i] = 0;
 	var self = this;
 	var off = function(){self.off(l)};
-	this.index.push(function(t, a, f){
-		if(f % i == 0) {
-			fn.apply(fn, [t, ++self.beatIndex[i], off])
-		}
-	})
-	return off
+	this.index.push((function(b, fn, beats, off){
+    var delta = 0
+    var skipNext = false
+    var skip = true
+    return function(t, a, f){
+      if(f % (i + delta) == 0) {
+              
+        //console.log(f, delta, i, i + delta)
+        if(skip){
+          skip = false
+          return
+        }
+        if(skipNext){
+          skipNext = false
+          skip = true
+          if(delta >= i) {
+            skip = false
+          }
+        }
+        fn.apply(fn, [t, ++b, off, swing])
+        
+        function swing(beat){
+          delta = Math.abs(Math.floor(self.spb * beat))
+          skipNext = true
+         // i = Math.abs(i + delta)
+        }
+      }
+    }
+  })(0, fn, beats, off))
+  return off
 
 }
 
