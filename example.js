@@ -6,13 +6,13 @@ var jigger = require('jigger')
 var generator = new jigger()
 
 var oscillators = require('oscillators');
-var sync = require('./') // jsynth-sync
+var sync = require('jsynth-sync') // jsynth-sync
 var bpm = 66 
 var timer = sync(bpm, master.sampleRate)
 
 
 var generators = [];
-var beatmath = require('../beatmath')
+var beatmath = require('beatmath')
 var onbeat = beatmath(24, [5,11,17,23])
 unswing = false
 var t0 = timer.on(1/4, function(ti, b, off, swing){

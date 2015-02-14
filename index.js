@@ -1,3 +1,5 @@
+var emitter = require('events').EventEmitter
+
 module.exports = sync
 
 var $ = module.exports
@@ -14,7 +16,6 @@ function sync(bpm, sampleRate){ // bpm, sampleRate,
 	this.t = 0
 	this.index = []
 	this.beatIndex = new Array()
-
 }
 
 $.prototype.clearAll = function(bpm, samplerate){
@@ -35,18 +36,24 @@ $.prototype.off = function(i){
 }
 
 $.prototype.on = function(beats, fn){
-	var i = Math.floor(this.spb * beats);
+	var i = Math.ceil(this.spb * beats);
 	var l = this.index.length;
 	var self = this;
-	var off = function(){self.off(l)};
+	var off = function(){
+    self.off(l)
+  };
+  var delta = 0
+  var skipNext = false
+  var skip = false 
+  function swing(beat){
+    delta = Math.abs(Math.floor(self.spb * beat))
+    skipNext = beat === 0 ? false : true
+  }
+  var emit = new emitter()
+  emit.on('stop', off)
 	this.index.push((function(b, fn, beats, off){
-    var delta = 0
-    var skipNext = false
-    var skip = true
     return function(t, a, f){
       if(f % (i + delta) == 0) {
-              
-        //console.log(f, delta, i, i + delta)
         if(skip){
           skip = false
           return
@@ -59,16 +66,11 @@ $.prototype.on = function(beats, fn){
           }
         }
         fn.apply(fn, [t, ++b, off, swing])
-        
-        function swing(beat){
-          delta = Math.abs(Math.floor(self.spb * beat))
-          skipNext = true
-         // i = Math.abs(i + delta)
-        }
+        emit.emit('beat', b)
       }
     }
   })(0, fn, beats, off))
-  return off
+  return emit
 
 }
 
